@@ -1,20 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerShooting : MonoBehaviour
 {
     public Weapon[] weapons;
-    public int currentWeapon;
+    [HideInInspector] public int currentWeapon;
     public KeyCode[] keysToSwitch;
 
-    public GameObject particle;
+    [SerializeField] private GameObject particle;
     
     private PlayerController playerController;
+
+    [SerializeField] private TMP_Text bulletsText;
+    [SerializeField] private TMP_Text bulletsAllText;
+
+    [SerializeField] private Image reloadingBar;
+
+    public bool isReloading;
 
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
+        RefreshUI();
+        
     }
     private void Update()
     {
@@ -22,9 +33,17 @@ public class PlayerShooting : MonoBehaviour
         Shoot();
     }
 
+    private void FixedUpdate()
+    {
+        if(isReloading)
+        {
+            Reloading();
+        }
+    }
+
     public void Shoot()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0) && weapons[currentWeapon].bullets > 0 && isReloading == false)
         {
             Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
             RaycastHit hit;
@@ -33,10 +52,60 @@ public class PlayerShooting : MonoBehaviour
                 Transform newParticle = Instantiate(particle,hit.point, Quaternion.identity, null).transform;
                 newParticle.LookAt(Camera.main.transform.position);
             }
-                playerController.handAnimator.CrossFade("Shoot", 0.08f);
-                
+            playerController.handAnimator.CrossFade("Shoot", 0.08f);
+
+            weapons[currentWeapon].bullets--;
+
+            if (weapons[currentWeapon].bullets == 0)
+            {
+                isReloading = true;
+                Reloading();
+            }
+
+            RefreshUI();
         }
     }
+
+    private void Reloading()
+    {
+
+        weapons[currentWeapon].reloading++;
+        if(weapons[currentWeapon].reloading >= weapons[currentWeapon].reloadingMax)
+        {
+            ReloadingFinish();
+            weapons[currentWeapon].reloading = 0;
+        }
+        reloadingBar.fillAmount = weapons[currentWeapon].reloading / weapons[currentWeapon].reloadingMax;
+    }
+
+    private void ReloadingFinish()
+    {
+        if (weapons[currentWeapon].bulletAll >= weapons[currentWeapon].bulletMax)
+        {
+            weapons[currentWeapon].bullets = weapons[currentWeapon].bulletMax;
+            weapons[currentWeapon].bulletAll -= weapons[currentWeapon].bulletMax;
+        }
+        else
+        {
+            weapons[currentWeapon].bullets = weapons[currentWeapon].bulletAll;
+            weapons[currentWeapon].bulletAll = 0;
+        }
+        isReloading = false;
+        RefreshUI();
+    }
+    private void RefreshUI()
+    {
+        bulletsText.text = weapons[currentWeapon].bullets + "/" + weapons[currentWeapon].bulletMax;
+
+        bulletsAllText.text = weapons[currentWeapon].bulletAll.ToString();
+
+        if(isReloading == false)
+        {
+            float bulletsFloat = weapons[currentWeapon].bullets;
+            float bulletsMaxFloat = weapons[currentWeapon].bulletMax;
+            reloadingBar.fillAmount = bulletsFloat / bulletsMaxFloat;
+        }
+    } 
 
     private void SwithCheck()
     {
