@@ -1312,6 +1312,7 @@ MonoBehaviour:
   bulletsText: {fileID: 1824402443}
   bulletsAllText: {fileID: 2063983527}
   reloadingBar: {fileID: 672340065}
+  handAnimator: {fileID: 596915888}
   isReloading: 0
 --- !u!1001 &1724023453
 PrefabInstance:
@@ -1649,6 +1650,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596915887}
     m_Modifications:
+    - target: {fileID: 781558649458520730, guid: 4b2f8489551d6d5499c0bf7975a897be, type: 3}
+      propertyPath: damage
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 781558649458520730, guid: 4b2f8489551d6d5499c0bf7975a897be, type: 3}
+      propertyPath: bullets
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 781558649458520730, guid: 4b2f8489551d6d5499c0bf7975a897be, type: 3}
+      propertyPath: bulletAll
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 781558649458520730, guid: 4b2f8489551d6d5499c0bf7975a897be, type: 3}
+      propertyPath: bulletMax
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 781558649458520730, guid: 4b2f8489551d6d5499c0bf7975a897be, type: 3}
+      propertyPath: reloadingMax
+      value: 75
+      objectReference: {fileID: 0}
     - target: {fileID: 5149913109557607375, guid: 4b2f8489551d6d5499c0bf7975a897be, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -1692,6 +1713,10 @@ PrefabInstance:
     - target: {fileID: 8426213883795419583, guid: 4b2f8489551d6d5499c0bf7975a897be, type: 3}
       propertyPath: m_Name
       value: blasterJ
+      objectReference: {fileID: 0}
+    - target: {fileID: 8426213883795419583, guid: 4b2f8489551d6d5499c0bf7975a897be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2565,6 +2590,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: blasterP
       objectReference: {fileID: 0}
+    - target: {fileID: 5657806290299734875, guid: eba2301e5af911347a433607dc2208f5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737962573900959160, guid: eba2301e5af911347a433607dc2208f5, type: 3}
+      propertyPath: damage
+      value: 35
+      objectReference: {fileID: 0}
     - target: {fileID: 7737962573900959160, guid: eba2301e5af911347a433607dc2208f5, type: 3}
       propertyPath: bulletAll
       value: 240
@@ -2870,6 +2903,34 @@ PrefabInstance:
     - target: {fileID: 1685018088599794655, guid: 3fa1f0cc0216f7a4bbe23db4871b9eb3, type: 3}
       propertyPath: m_Name
       value: blasterE
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685018088599794655, guid: 3fa1f0cc0216f7a4bbe23db4871b9eb3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342333589356580542, guid: 3fa1f0cc0216f7a4bbe23db4871b9eb3, type: 3}
+      propertyPath: damage
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342333589356580542, guid: 3fa1f0cc0216f7a4bbe23db4871b9eb3, type: 3}
+      propertyPath: bullets
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342333589356580542, guid: 3fa1f0cc0216f7a4bbe23db4871b9eb3, type: 3}
+      propertyPath: distance
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342333589356580542, guid: 3fa1f0cc0216f7a4bbe23db4871b9eb3, type: 3}
+      propertyPath: bulletAll
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342333589356580542, guid: 3fa1f0cc0216f7a4bbe23db4871b9eb3, type: 3}
+      propertyPath: bulletMax
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342333589356580542, guid: 3fa1f0cc0216f7a4bbe23db4871b9eb3, type: 3}
+      propertyPath: reloadingMax
+      value: 205
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
