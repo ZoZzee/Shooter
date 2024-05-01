@@ -15,6 +15,10 @@ public class Weapon : MonoBehaviour
     [Header("Damage")]
     public float damage;
 
+    [Header("Reloading")]
+    public float reloading;
+    public float reloadingMax;
+
     [Header ("Distance")]
     public float distance;
 
