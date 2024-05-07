@@ -19,6 +19,8 @@ public class PlayerShooting : MonoBehaviour
 
     [SerializeField] private Image reloadingBar;
 
+    [SerializeField] private Animator handAnimator;
+
     public bool isReloading;
 
     private void Awake()
@@ -40,6 +42,10 @@ public class PlayerShooting : MonoBehaviour
             Reloading();
         }
     }
+    private void LateUpdate()
+    {
+        handAnimator.SetBool("IsReloading", isReloading);
+    }
 
     public void Shoot()
     {
@@ -56,7 +62,7 @@ public class PlayerShooting : MonoBehaviour
 
             weapons[currentWeapon].bullets--;
 
-            if (weapons[currentWeapon].bullets == 0)
+            if (weapons[currentWeapon].bullets == 0 && weapons[currentWeapon].bulletAll > 0)
             {
                 isReloading = true;
                 Reloading();
@@ -142,6 +148,7 @@ public class PlayerShooting : MonoBehaviour
         {
             SwitchWeapon();
         }
+        RefreshUI();
 
     }
 
