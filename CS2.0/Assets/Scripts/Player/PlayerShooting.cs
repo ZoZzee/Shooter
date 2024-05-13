@@ -57,6 +57,11 @@ public class PlayerShooting : MonoBehaviour
             { 
                 Transform newParticle = Instantiate(particle,hit.point, Quaternion.identity, null).transform;
                 newParticle.LookAt(Camera.main.transform.position);
+                if (hit.collider.GetComponent<EnemyHealth>())
+                {
+                    float damage = Random.Range(weapons[currentWeapon].damageMin, weapons[currentWeapon].damageMax);
+                    hit.collider.GetComponent<EnemyHealth>().Damage(damage);
+                }
             }
             playerController.handAnimator.CrossFade("Shoot", 0.08f);
 

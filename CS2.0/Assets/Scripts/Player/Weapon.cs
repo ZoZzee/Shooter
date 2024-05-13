@@ -13,7 +13,8 @@ public class Weapon : MonoBehaviour
     public int bulletAll;
 
     [Header("Damage")]
-    public float damage;
+    public float damageMin;
+    public float damageMax;
 
     [Header("Reloading")]
     public float reloading;
