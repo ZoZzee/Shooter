@@ -21,7 +21,11 @@ public class PlayerShooting : MonoBehaviour
 
     [SerializeField] private Animator handAnimator;
 
+
     public bool isReloading;
+
+    private bool firstShot = false;
+    private bool isShoot = false;
 
     private void Awake()
     {
@@ -33,6 +37,8 @@ public class PlayerShooting : MonoBehaviour
     {
         SwithCheck();
         Shoot();
+        ReloadingVepons();
+
     }
 
     private void FixedUpdate()
@@ -41,6 +47,15 @@ public class PlayerShooting : MonoBehaviour
         {
             Reloading();
         }
+
+        if(firstShot == true)
+        {
+            weapons[currentWeapon].speedShooting++;
+            weapons[currentWeapon].speedShooting  = weapons[currentWeapon].speedShooting == weapons[currentWeapon].speedShootingMax ?
+                                                    0 : weapons[currentWeapon].speedShooting;
+            isShoot = weapons[currentWeapon].speedShooting == 0 ? false : true;
+        }
+
     }
     private void LateUpdate()
     {
@@ -49,31 +64,85 @@ public class PlayerShooting : MonoBehaviour
 
     public void Shoot()
     {
-        if(Input.GetMouseButtonDown(0) && weapons[currentWeapon].bullets > 0 && isReloading == false)
+        if (Input.GetMouseButton(0) && weapons[currentWeapon].bullets > 0 && isReloading == false && firstShot == true)
         {
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-            RaycastHit hit;
-            if(Physics.Raycast(ray, out hit, weapons[currentWeapon].distance)) 
-            { 
-                Transform newParticle = Instantiate(particle,hit.point, Quaternion.identity, null).transform;
-                newParticle.LookAt(Camera.main.transform.position);
-                if (hit.collider.GetComponent<EnemyHealth>())
-                {
-                    float damage = Random.Range(weapons[currentWeapon].damageMin, weapons[currentWeapon].damageMax);
-                    hit.collider.GetComponent<EnemyHealth>().Damage(damage);
-                }
-            }
-            playerController.handAnimator.CrossFade("Shoot", 0.08f);
-
-            weapons[currentWeapon].bullets--;
-
-            if (weapons[currentWeapon].bullets == 0 && weapons[currentWeapon].bulletAll > 0)
+            if (weapons[currentWeapon].speedShootingMax >= weapons[currentWeapon].speedShooting && isShoot == false)
             {
-                isReloading = true;
-                Reloading();
+                // Можна це закинути в одну функцію яку буду викликати
+
+                Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, weapons[currentWeapon].distance))
+                {
+                    Transform newParticle = Instantiate(particle, hit.point, Quaternion.identity, null).transform;
+                    newParticle.LookAt(Camera.main.transform.position);
+                    if (hit.collider.GetComponent<EnemyHealth>())
+                    {
+                        float damage = Random.Range(weapons[currentWeapon].damageMin, weapons[currentWeapon].damageMax);
+                        hit.collider.GetComponent<EnemyHealth>().Damage(damage);
+                    }
+                }
+                playerController.handAnimator.CrossFade("Shoot", 0.08f);
+
+                weapons[currentWeapon].bullets--;
+
+                if (weapons[currentWeapon].bullets == 0 && weapons[currentWeapon].bulletAll > 0)
+                {
+                    isReloading = true;
+                    Reloading();
+                }
+                isShoot = true;
+                RefreshUI();
+            }  
+        }
+
+            if (Input.GetMouseButtonDown(0) && weapons[currentWeapon].bullets > 0 && isReloading == false && firstShot == false)
+            {
+
+                // Можна це закинути в одну функцію яку буду викликати
+
+                Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, weapons[currentWeapon].distance))
+                {
+                    Transform newParticle = Instantiate(particle, hit.point, Quaternion.identity, null).transform;
+                    newParticle.LookAt(Camera.main.transform.position);
+                    if (hit.collider.GetComponent<EnemyHealth>())
+                    {
+                        float damage = Random.Range(weapons[currentWeapon].damageMin, weapons[currentWeapon].damageMax);
+                        hit.collider.GetComponent<EnemyHealth>().Damage(damage);
+                    }
+                }
+                playerController.handAnimator.CrossFade("Shoot", 0.08f);
+
+                weapons[currentWeapon].bullets--;
+
+                if (weapons[currentWeapon].bullets == 0 && weapons[currentWeapon].bulletAll > 0)
+                {
+                    isReloading = true;
+                    Reloading();
+                }
+                firstShot = true;
+                RefreshUI();
+
             }
 
-            RefreshUI();
+            if (Input.GetMouseButtonUp(0))
+            {
+                firstShot = false;
+                weapons[currentWeapon].speedShooting = 0;
+            }
+
+            
+            //RefreshUI();
+    }
+
+    private void ReloadingVepons() 
+    {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            isReloading = true;
+            Reloading();
         }
     }
 
@@ -93,8 +162,9 @@ public class PlayerShooting : MonoBehaviour
     {
         if (weapons[currentWeapon].bulletAll >= weapons[currentWeapon].bulletMax)
         {
+            int bullets = weapons[currentWeapon].bullets;
             weapons[currentWeapon].bullets = weapons[currentWeapon].bulletMax;
-            weapons[currentWeapon].bulletAll -= weapons[currentWeapon].bulletMax;
+            weapons[currentWeapon].bulletAll -= weapons[currentWeapon].bulletMax - bullets;
         }
         else
         {

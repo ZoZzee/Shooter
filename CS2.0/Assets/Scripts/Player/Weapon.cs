@@ -15,6 +15,9 @@ public class Weapon : MonoBehaviour
     [Header("Damage")]
     public float damageMin;
     public float damageMax;
+    public float speedShooting;
+    public float speedShootingMax;
+
 
     [Header("Reloading")]
     public float reloading;
